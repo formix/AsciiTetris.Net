@@ -64,5 +64,13 @@ namespace Formix.Games.Tetris.Display
 
             return cc.Char == Char && cc.Foreground == Foreground && cc.Background == Background;
         }
+
+        public override int GetHashCode()
+        {
+            return 
+                Background.GetHashCode() ^ 
+                Foreground.GetHashCode() ^ 
+                Char.GetHashCode();
+        }
     }
 }

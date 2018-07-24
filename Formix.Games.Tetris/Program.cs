@@ -10,10 +10,10 @@ namespace Formix.Games.Tetris
         {
             RunTest();
 
-            var frame1 = new Frame("main", 15, 30)
+            var frame1 = new Frame("main", 22, 22)
             {
-                Row = 3,
-                Col = 6
+                Row = 1,
+                Col = 29
             };
 
             var screen = new Screen();
