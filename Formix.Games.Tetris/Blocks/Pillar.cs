@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Formix.Games.Tetris
 {
-    public class ColumnBlock : Sprite, IBlock
+    public class Pillar : Sprite, IBlock
     {
         //private Timer _timer;
 
@@ -14,7 +14,7 @@ namespace Formix.Games.Tetris
         public int Position { get; private set; }
         //public int Speed { get; private set; }
 
-        public ColumnBlock() : base(4, 8)
+        public Pillar() : base(4, 8)
         {
             Row = 1;
             Col = 9;
