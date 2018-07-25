@@ -28,6 +28,12 @@ namespace Formix.Games.Tetris.Display
             Project();
         }
 
+        public Screen Add(Frame frame)
+        {
+            Canvases.Add(frame);
+            return this;
+        }
+
         public void Project()
         {
             lock (_currentFrame)

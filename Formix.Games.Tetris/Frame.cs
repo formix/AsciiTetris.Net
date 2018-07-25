@@ -19,6 +19,12 @@ namespace Formix.Games.Tetris
             Name = name;
         }
 
+        public Frame Add(IBlock block)
+        {
+            Sprites.Add((Sprite)block);
+            return this;
+        }
+
         private Sprite CreateBorders()
         {
             var sprite = new Sprite(Height, Width, Name);

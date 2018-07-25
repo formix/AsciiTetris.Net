@@ -8,20 +8,37 @@ namespace Formix.Games.Tetris
     {
         static void Main(string[] args)
         {
-            RunTest();
+            //RunTest();
 
-            var frame1 = new Frame("main", 22, 22)
+            var mainFrame = new Frame("main", 22, 22)
             {
                 Row = 1,
-                Col = 29
+                Col = 27
             };
 
+
+            IBlock block = new ColumnBlock();
+            mainFrame.Add(block);
+
+
             var screen = new Screen();
-            screen.Canvases.Add(frame1);
+            screen.Canvases.Add(mainFrame);
 
-            screen.Project();
-
-            Console.ReadKey(true);
+            var loop = true;
+            while (loop)
+            {
+                screen.Project();
+                var keyInfo = Console.ReadKey(true);
+                switch (keyInfo.KeyChar)
+                {
+                    case 'w': block.Rotate(); break;
+                    case 's': block.MoveDown(); break;
+                    case 'a': block.MoveLeft(); break;
+                    case 'd': block.MoveRight(); break;
+                    case 'r': screen.Refresh(); break;
+                    case 'q': loop = false; break;
+                }
+            }
         }
 
 

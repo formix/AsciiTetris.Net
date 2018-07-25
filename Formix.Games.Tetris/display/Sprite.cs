@@ -38,7 +38,7 @@ namespace Formix.Games.Tetris.Display
             }
         }
 
-        public void PrintH(int row, int col, char c, int count,
+        public Sprite PrintH(int row, int col, char c, int count,
                 ConsoleColor foreground = ConsoleColor.Gray,
                 ConsoleColor background = ConsoleColor.Black)
         {
@@ -64,9 +64,11 @@ namespace Formix.Games.Tetris.Display
             {
                 Content[row, currCol] = new ColoredChar(c, foreground, background);
             }
+
+            return this;
         }
 
-        public void PrintH(int row, int col, string str,
+        public Sprite PrintH(int row, int col, string str,
                 ConsoleColor foreground = ConsoleColor.Gray,
                 ConsoleColor background = ConsoleColor.Black)
         {
@@ -75,14 +77,16 @@ namespace Formix.Games.Tetris.Display
             {
                 if (col + currCol >= Width)
                 {
-                    return;
+                    return this;
                 }
                 PrintV(row, col + currCol, c, 1, foreground, background);
                 currCol++;
             }
+
+            return this;
         }
 
-        public void PrintV(int row, int col, char c, int count,
+        public Sprite PrintV(int row, int col, char c, int count,
                 ConsoleColor foreground = ConsoleColor.Gray,
                 ConsoleColor background = ConsoleColor.Black)
         {
@@ -110,9 +114,10 @@ namespace Formix.Games.Tetris.Display
                 Content[r, col] = new ColoredChar(c, foreground, background);
             }
 
+            return this;
         }
 
-        public void PrintV(int row, int col, string str,
+        public Sprite PrintV(int row, int col, string str,
                 ConsoleColor foreground = ConsoleColor.Gray,
                 ConsoleColor background = ConsoleColor.Black)
         {
@@ -121,11 +126,26 @@ namespace Formix.Games.Tetris.Display
             {
                 if (row + currRow >= Height)
                 {
-                    return;
+                    return this;
                 }
                 PrintV(row + currRow, col, c, 1, foreground, background);
                 currRow++;
             }
+
+            return this;
+        }
+
+
+        public Sprite Clear()
+        {
+            for (int r = 0; r < Height; r++)
+            {
+                for (int c = 0; c < Width; c++)
+                {
+                    Content[r, c] = null;
+                }
+            }
+            return this;
         }
 
 
