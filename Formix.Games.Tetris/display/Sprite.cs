@@ -12,6 +12,22 @@ namespace Formix.Games.Tetris.Display
         public int Col { get; set; }
         public int Height { get => Content.GetUpperBound(0) + 1; }
         public int Width { get => Content.GetUpperBound(1) + 1; }
+
+        public int VisibleWidth
+        {
+            get
+            {
+
+            }
+        }
+
+        public int VisibleHeight
+        {
+            get
+            {
+            }
+        }
+
         public ColoredChar[,] Content { get; private set; }
 
         public Sprite(int height, int width, string name = null)
