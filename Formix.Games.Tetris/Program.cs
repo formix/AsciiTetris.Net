@@ -17,7 +17,7 @@ namespace Formix.Games.Tetris
             };
 
 
-            IBlock block = new ColumnBlock();
+            IBlock block = new Pillar();
             mainFrame.Add(block);
 
 

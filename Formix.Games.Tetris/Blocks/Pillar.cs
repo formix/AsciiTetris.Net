@@ -18,7 +18,7 @@ namespace Formix.Games.Tetris
         {
             Row = 1;
             Col = 9;
-            Position = new Random().Next(2);
+            Position = new Random().Next(4);
             UpdateDisplay();
             //Speed = -1;
             //_timer = null;
