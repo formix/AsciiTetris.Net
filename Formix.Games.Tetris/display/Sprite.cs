@@ -198,6 +198,5 @@ namespace Formix.Games.Tetris.Display
 
             return 0;
         }
-
     }
 }

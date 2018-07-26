@@ -6,6 +6,7 @@ namespace Formix.Games.Tetris.Display
 {
     public class Canvas : IComparable<Canvas>
     {
+        private static int _nextId = 1;
 
         public ConsoleColor Background { get; set; }
         public int ZIndex { get; set; }
@@ -86,7 +87,7 @@ namespace Formix.Games.Tetris.Display
             return false;
         }
 
-        public ColoredChar GetChar(int row, int col)
+        public ColoredChar GetChar(int row, int col, Action<IEnumerable<Collision>> hit = null)
         {
             if (row - Row < 0 || row - Row >= Height)
             {
@@ -102,13 +103,44 @@ namespace Formix.Games.Tetris.Display
             {
                 Background = Background
             };
+
             lock (Sprites)
             {
+                Dictionary<int, Collision> collisionTable = null;
+                if (hit != null)
+                {
+                    collisionTable = new Dictionary<int, Collision>();
+                }
+
                 foreach (var sprite in Sprites)
                 {
                     if (sprite.Contains(row - Row, col - Col))
                     {
-                        currChar.Import(sprite.GetChar(row - Row, col - Col), currChar.Background);
+                        var spriteChar = sprite.GetChar(row - Row, col - Col);
+                        currChar.Import(spriteChar, currChar.Background);
+
+                        if (collisionTable != null && spriteChar != null && !spriteChar.IsNull)
+                        {
+                            // Builds the collision table
+                            if (!collisionTable.ContainsKey(sprite.ZIndex))
+                            {
+                                collisionTable.Add(ZIndex, new Collision());
+                            }
+                            collisionTable[sprite.ZIndex].Add(sprite);
+                        }
+                    }
+                }
+
+                if (hit != null)
+                {
+                    var collisions =
+                        from c in collisionTable.Values
+                        where c.Count > 1
+                        select c;
+
+                    if (collisions.Count() > 0)
+                    {
+                        hit(collisions);
                     }
                 }
             }

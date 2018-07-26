@@ -34,26 +34,51 @@ namespace Formix.Games.Tetris.Display
             return this;
         }
 
-        public void Project()
+        public bool Project(Func<Canvas, IEnumerable<Collision>, bool> handleCollisions = null)
         {
             lock (_currentFrame)
             {
+                bool continueProjection = true;
+                ICollection<Projection> projections = new LinkedList<Projection>();
                 for (int row = 0; row < _currentFrame.GetUpperBound(0); row++)
                 {
                     for (int col = 0; col < _currentFrame.GetUpperBound(1); col++)
                     {
-                        var c = GetChar(row, col);
-                        Project(row, col, c);
+                        ColoredChar c = null;
+                        if (handleCollisions == null)
+                        {
+                            c = GetChar(row, col);
+                        }
+                        else
+                        {
+                            c = GetChar(row, col,
+                                (canvas, collisions) => continueProjection = handleCollisions(canvas, collisions));
+                        }
+
+                        if (!continueProjection)
+                        {
+                            return false;
+                        }
+
+                        projections.Add(new Projection(row, col, c));
                     }
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.BackgroundColor = ConsoleColor.Black;
                 }
-                Console.SetWindowPosition(0, 0);
+
+                foreach (var projection in projections)
+                {
+                    Project(projection);
+                }
+
+                return true;
             }
         }
 
-        private void Project(int row, int col, ColoredChar c)
+        private void Project(Projection projection)
         {
+            var row = projection.Row;
+            var col = projection.Col;
+            var c = projection.Char;
+
             if (!c.Equals(_currentFrame[row, col]))
             {
                 Console.CursorTop = row;
@@ -87,7 +112,7 @@ namespace Formix.Games.Tetris.Display
         }
 
 
-        private ColoredChar GetChar(int row, int col)
+        private ColoredChar GetChar(int row, int col, Action<Canvas, IEnumerable<Collision>> hit = null)
         {
             if (row < 0 || row >= Height)
             {
@@ -104,7 +129,17 @@ namespace Formix.Games.Tetris.Display
             {
                 if (canvas.Contains(row, col))
                 {
-                    currChar.Import(canvas.GetChar(row, col), currChar.Background);
+                    ColoredChar c = null;
+
+                    if (hit == null)
+                    {
+                        c = canvas.GetChar(row, col);
+                    }
+                    else
+                    {
+                        c = canvas.GetChar(row, col, (collisions) => hit(canvas, collisions));
+                    }
+                    currChar.Import(c, currChar.Background);
                 }
             }
 
