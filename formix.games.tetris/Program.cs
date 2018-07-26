@@ -1,4 +1,5 @@
-﻿using Formix.Games.Tetris.Display;
+﻿using Formix.Games.Tetris.Blocks;
+using Formix.Games.Tetris.Display;
 using System;
 using System.Threading;
 
@@ -17,17 +18,41 @@ namespace Formix.Games.Tetris
             };
 
 
+            var messageFrame = new Frame("messages", 3, 17)
+            {
+                Row = 1,
+                Col = 1
+            };
+
+            var message = new Sprite(1, 15)
+            {
+                Row = 1,
+                Col = 1
+            };
+            messageFrame.Sprites.Add(message);
+
             IBlock block = new Pillar();
             mainFrame.Add(block);
 
-
             var screen = new Screen();
-            screen.Canvases.Add(mainFrame);
+            screen.Add(mainFrame);
+            screen.Add(messageFrame);
 
             var loop = true;
             while (loop)
             {
-                screen.Project();
+                var projectionSucceeded = screen.Project((c, cols) =>
+                {
+                    message.PrintH(0, 0, "Collision!", ConsoleColor.Red);
+                    block.Undo();
+                    return false;
+                });
+
+                if (!projectionSucceeded)
+                {
+                    screen.Project();
+                }
+
                 var keyInfo = Console.ReadKey(true);
                 switch (keyInfo.KeyChar)
                 {
@@ -38,6 +63,7 @@ namespace Formix.Games.Tetris
                     case 'r': screen.Refresh(); break;
                     case 'q': loop = false; break;
                 }
+                message.Clear();
             }
         }
 
