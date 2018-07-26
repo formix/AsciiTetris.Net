@@ -18,14 +18,20 @@ namespace Formix.Games.Tetris.Blocks
 
         public void MoveLeft()
         {
-            Col -= 2;
-            _lastAction = Actions.MoveLeft;
+            if (Col > 1)
+            {
+                Col -= 2;
+                _lastAction = Actions.MoveLeft;
+            }
         }
 
         public void MoveRight()
         {
-            Col += 2;
-            _lastAction = Actions.MoveRight;
+            if (Col < 19)
+            {
+                Col += 2;
+                _lastAction = Actions.MoveRight;
+            }
         }
 
         public void MoveDown()

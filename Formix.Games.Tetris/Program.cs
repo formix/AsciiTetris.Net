@@ -18,15 +18,23 @@ namespace Formix.Games.Tetris
             };
 
 
-            var messageFrame = new Frame("messages", 3, 17)
+            var messageFrame = new Frame("messages", 4, 22)
             {
                 Row = 1,
                 Col = 1
             };
 
-            var message = new Sprite(1, 15)
+
+            var position = new Sprite(1, 20)
             {
                 Row = 1,
+                Col = 2
+            };
+            messageFrame.Sprites.Add(position);
+
+            var message = new Sprite(1, 20)
+            {
+                Row = 2,
                 Col = 2
             };
             messageFrame.Sprites.Add(message);
@@ -41,6 +49,8 @@ namespace Formix.Games.Tetris
             var loop = true;
             while (loop)
             {
+                position.PrintH(0, 0, $"Row: {block.Row:00}, Col: {block.Col:00}", ConsoleColor.Yellow);
+
                 var projectionSucceeded = screen.Project((c, cols) =>
                 {
                     message.PrintH(0, 0, "Collision!", ConsoleColor.Red);
@@ -50,6 +60,7 @@ namespace Formix.Games.Tetris
 
                 if (!projectionSucceeded)
                 {
+                    position.PrintH(0, 0, $"Row: {block.Row:00}, Col: {block.Col:00}", ConsoleColor.Yellow);
                     screen.Project();
                 }
 
@@ -63,10 +74,7 @@ namespace Formix.Games.Tetris
                     case 'r': screen.Refresh(); break;
                     case 'q': loop = false; break;
                 }
-                if (keyInfo.KeyChar != 'r')
-                {
-                    message.Clear();
-                }
+                message.Clear();
             }
         }
 

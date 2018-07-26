@@ -3,6 +3,8 @@
     public interface IBlock
     {
         int Position { get; }
+        int Row { get; }
+        int Col { get; }
 
         void Rotate();
         void RotateBack();
