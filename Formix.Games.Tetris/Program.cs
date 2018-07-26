@@ -27,7 +27,7 @@ namespace Formix.Games.Tetris
             var message = new Sprite(1, 15)
             {
                 Row = 1,
-                Col = 1
+                Col = 2
             };
             messageFrame.Sprites.Add(message);
 
@@ -63,7 +63,10 @@ namespace Formix.Games.Tetris
                     case 'r': screen.Refresh(); break;
                     case 'q': loop = false; break;
                 }
-                message.Clear();
+                if (keyInfo.KeyChar != 'r')
+                {
+                    message.Clear();
+                }
             }
         }
 
